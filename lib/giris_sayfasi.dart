@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import './constants.dart';
+import './ikon_cinsiyet.dart';
+import './my_container.dart';
+
 class InputPage extends StatefulWidget {
   @override
   _InputPageState createState() => _InputPageState();
 }
 
 class _InputPageState extends State<InputPage> {
+  String? seciliCinsiyet;
+  double sigaraSayisi = 0.0;
+  double yapilanSpor = 1.0;
+  int boy = 170;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,12 +27,43 @@ class _InputPageState extends State<InputPage> {
         centerTitle: true,
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             child: Row(
               children: [
                 Expanded(
-                  child: MyContainer(),
+                  child: MyContainer(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        RotatedBox(
+                          quarterTurns: 3,
+                          child: Text(
+                            "BOY",
+                            style: metinStili,
+                          ),
+                        ),
+                        RotatedBox(
+                            quarterTurns: 3,
+                            child: Text(
+                              boy.toString(),
+                              style: sayiStili,
+                            )),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            OutlinedButton(
+                                onPressed: () {},
+                                child: Icon(FontAwesomeIcons.plus)),
+                            OutlinedButton(
+                                onPressed: () {},
+                                child: Icon(FontAwesomeIcons.minus))
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
                 ),
                 Expanded(
                   child: MyContainer(),
@@ -33,29 +72,94 @@ class _InputPageState extends State<InputPage> {
             ),
           ),
           Expanded(
-            child: MyContainer(),
+            child: MyContainer(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Kaç Gün Spor Yapıyorsunuz?",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                  Text(
+                    yapilanSpor.round().toString(),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 26,
+                        color: Colors.lightBlue),
+                  ),
+                  Slider(
+                      divisions: 7,
+                      min: 0,
+                      max: 7,
+                      value: yapilanSpor,
+                      onChanged: (double deger) {
+                        setState(() {
+                          yapilanSpor = deger;
+                        });
+                      })
+                ],
+              ),
+            ),
           ),
           Expanded(
-            child: MyContainer(),
+            child: MyContainer(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Günde Kaç Sigara İçiyorsunuz?",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                  Text(sigaraSayisi.round().toString(),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 26,
+                          color: Colors.lightBlue)),
+                  Slider(
+                      min: 0,
+                      max: 30,
+                      value: sigaraSayisi,
+                      onChanged: (double deger) {
+                        setState(() {
+                          sigaraSayisi = deger;
+                        });
+                      })
+                ],
+              ),
+            ),
           ),
           Expanded(
             child: Row(
               children: [
                 Expanded(
                   child: MyContainer(
+                      onPress: () {
+                        setState(() {
+                          seciliCinsiyet = 'KADIN';
+                        });
+                      },
+                      renk: seciliCinsiyet == 'KADIN'
+                          ? Colors.yellowAccent
+                          : Colors.white,
                       child: GenderWidget(
-                    ikon: FontAwesomeIcons.venus,
-                    renk: Colors.pink,
-                    cinsiyet: "KADIN",
-                  )),
+                        ikon: FontAwesomeIcons.venus,
+                        renk: Colors.pink,
+                        cinsiyet: "KADIN",
+                      )),
                 ),
                 Expanded(
                   child: MyContainer(
+                      onPress: () {
+                        setState(() {
+                          seciliCinsiyet = 'ERKEK';
+                        });
+                      },
+                      renk: seciliCinsiyet == 'ERKEK'
+                          ? Colors.yellowAccent
+                          : Colors.white,
                       child: GenderWidget(
-                    cinsiyet: "ERKEK",
-                    renk: Colors.blue,
-                    ikon: FontAwesomeIcons.mars,
-                  )),
+                        cinsiyet: "ERKEK",
+                        renk: Colors.blue,
+                        ikon: FontAwesomeIcons.mars,
+                      )),
                 ),
               ],
             ),
@@ -63,48 +167,5 @@ class _InputPageState extends State<InputPage> {
         ],
       ),
     );
-  }
-}
-
-class GenderWidget extends StatelessWidget {
-  final String cinsiyet;
-  final IconData? ikon;
-  final Color? renk;
-  GenderWidget({this.cinsiyet = "", this.ikon, this.renk});
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          ikon,
-          size: 50,
-          color: renk,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Text(
-          cinsiyet,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-        )
-      ],
-    );
-  }
-}
-
-class MyContainer extends StatelessWidget {
-  final Color renk;
-  final Widget? child;
-  MyContainer({this.renk = Colors.white, this.child});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: child,
-        margin: EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(19),
-          color: renk,
-        ));
   }
 }
