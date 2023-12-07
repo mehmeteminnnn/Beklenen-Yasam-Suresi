@@ -15,6 +15,7 @@ class _InputPageState extends State<InputPage> {
   double sigaraSayisi = 0.0;
   double yapilanSpor = 1.0;
   int boy = 170;
+  int kilo = 65;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +23,7 @@ class _InputPageState extends State<InputPage> {
         backgroundColor: Colors.lightBlue[400],
         title: Text(
           'YAŞAM BEKLENTİSİ',
-          style: TextStyle(color: Colors.black54),
+          style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -34,39 +35,11 @@ class _InputPageState extends State<InputPage> {
               children: [
                 Expanded(
                   child: MyContainer(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        RotatedBox(
-                          quarterTurns: 3,
-                          child: Text(
-                            "BOY",
-                            style: metinStili,
-                          ),
-                        ),
-                        RotatedBox(
-                            quarterTurns: 3,
-                            child: Text(
-                              boy.toString(),
-                              style: sayiStili,
-                            )),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            OutlinedButton(
-                                onPressed: () {},
-                                child: Icon(FontAwesomeIcons.plus)),
-                            OutlinedButton(
-                                onPressed: () {},
-                                child: Icon(FontAwesomeIcons.minus))
-                          ],
-                        )
-                      ],
-                    ),
+                    child: buildRow(boy, "BOY"),
                   ),
                 ),
                 Expanded(
-                  child: MyContainer(),
+                  child: MyContainer(child: buildRow(kilo, "KİLO")),
                 ),
               ],
             ),
@@ -76,7 +49,7 @@ class _InputPageState extends State<InputPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Kaç Gün Spor Yapıyorsunuz?",
+                  Text("Haftada Kaç Gün Spor Yapıyorsunuz?",
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                   Text(
@@ -105,7 +78,7 @@ class _InputPageState extends State<InputPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Günde Kaç Sigara İçiyorsunuz?",
+                  Text(" Günde Kaç Sigara İçiyorsunuz?",
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                   Text(sigaraSayisi.round().toString(),
@@ -166,6 +139,47 @@ class _InputPageState extends State<InputPage> {
           )
         ],
       ),
+    );
+  }
+
+  Row buildRow(int boykilo, String yazi) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        RotatedBox(
+          quarterTurns: 3,
+          child: Text(
+            yazi,
+            style: metinStili,
+          ),
+        ),
+        RotatedBox(
+          quarterTurns: 3,
+          child: Text(
+            yazi == "BOY" ? boy.toString() : kilo.toString(),
+            style: sayiStili,
+          ),
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            OutlinedButton(
+                onPressed: () {
+                  setState(() {
+                    yazi == "BOY" ? boy++ : kilo++;
+                  });
+                },
+                child: Icon(FontAwesomeIcons.plus)),
+            OutlinedButton(
+                onPressed: () {
+                  setState(() {
+                    yazi == "BOY" ? boy-- : kilo--;
+                  });
+                },
+                child: Icon(FontAwesomeIcons.minus))
+          ],
+        )
+      ],
     );
   }
 }
