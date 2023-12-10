@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:yasam_beklentisi/user_data.dart';
 
 import './constants.dart';
 import './ikon_cinsiyet.dart';
 import './my_container.dart';
+import './sonuc_sayfasi.dart';
 
 class InputPage extends StatefulWidget {
   @override
@@ -104,19 +106,20 @@ class _InputPageState extends State<InputPage> {
               children: [
                 Expanded(
                   child: MyContainer(
-                      onPress: () {
-                        setState(() {
-                          seciliCinsiyet = 'KADIN';
-                        });
-                      },
-                      renk: seciliCinsiyet == 'KADIN'
-                          ? Colors.yellowAccent
-                          : Colors.white,
-                      child: GenderWidget(
-                        ikon: FontAwesomeIcons.venus,
-                        renk: Colors.pink,
-                        cinsiyet: "KADIN",
-                      )),
+                    onPress: () {
+                      setState(() {
+                        seciliCinsiyet = 'KADIN';
+                      });
+                    },
+                    renk: seciliCinsiyet == 'KADIN'
+                        ? Colors.yellowAccent
+                        : Colors.white,
+                    child: GenderWidget(
+                      ikon: FontAwesomeIcons.venus,
+                      renk: Colors.pink,
+                      cinsiyet: "KADIN",
+                    ),
+                  ),
                 ),
                 Expanded(
                   child: MyContainer(
@@ -136,7 +139,31 @@ class _InputPageState extends State<InputPage> {
                 ),
               ],
             ),
-          )
+          ),
+          Center(
+            child: TextButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SonucSayfasi(
+                          userData: UserData(
+                              boy: boy,
+                              kilo: kilo,
+                              seciliCinsiyet: seciliCinsiyet,
+                              sigaraSayisi: sigaraSayisi,
+                              yapilanSpor: yapilanSpor)),
+                    ));
+              },
+              child: Text("SONUCU GÖR", style: TextStyle(color: Colors.white)),
+              style: TextButton.styleFrom(
+                  backgroundColor: Colors.blueAccent[200],
+                  textStyle: TextStyle(
+                    fontSize: 29,
+                    fontWeight: FontWeight.bold,
+                  )),
+            ),
+          ),
         ],
       ),
     );
